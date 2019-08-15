@@ -50,9 +50,12 @@ public class SmartIdRestConnector implements SmartIdConnector {
   private static final String SESSION_STATUS_URI = "/session/{sessionId}";
   private static final String CERTIFICATE_CHOICE_BY_NATIONAL_IDENTITY_PATH = "/certificatechoice/pno/{country}/{nationalIdentityNumber}";
   private static final String CERTIFICATE_CHOICE_BY_DOCUMENT_NUMBER_PATH = "/certificatechoice/document/{documentNumber}";
+  private static final String CERTIFICATE_CHOICE_BY_NATURAL_PERSON_SEMANTICS_IDENTIFIER = "/certificatechoice/etsi/{semantics-identifier}";
   private static final String SIGNATURE_BY_DOCUMENT_NUMBER_PATH = "/signature/document/{documentNumber}";
+  private static final String SIGNATURE_BY_NATURAL_PERSON_SEMANTICS_IDENTIFIER = "/signature/etsi/{semantics-identifier}";
   private static final String AUTHENTICATE_BY_DOCUMENT_NUMBER_PATH = "/authentication/document/{documentNumber}";
   private static final String AUTHENTICATE_BY_NATIONAL_IDENTITY_PATH = "/authentication/pno/{country}/{nationalIdentityNumber}";
+  private static final String AUTHENTICATE_BY_NATURAL_PERSON_SEMANTICS_IDENTIFIER = "/authentication/etsi/{semantics-identifier}";
   private String endpointUrl;
   private ClientConfig clientConfig;
   private TimeUnit sessionStatusResponseSocketOpenTimeUnit;
@@ -102,6 +105,17 @@ public class SmartIdRestConnector implements SmartIdConnector {
         .fromUri(endpointUrl)
         .path(CERTIFICATE_CHOICE_BY_DOCUMENT_NUMBER_PATH)
         .build(documentNumber);
+    return postCertificateRequest(uri, request);
+  }
+
+  @Override
+  public CertificateChoiceResponse getCertificate(SemanticsIdentifier identifier,
+      CertificateRequest request) {
+    logger.debug("Getting certificate for identifier " + identifier.getIdentifier());
+    URI uri = UriBuilder
+        .fromUri(endpointUrl)
+        .path(CERTIFICATE_CHOICE_BY_NATURAL_PERSON_SEMANTICS_IDENTIFIER)
+        .build(identifier.getIdentifier());
     return postCertificateRequest(uri, request);
   }
 

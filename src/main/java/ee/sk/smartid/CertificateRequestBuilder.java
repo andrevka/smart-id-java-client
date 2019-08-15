@@ -205,6 +205,23 @@ public class CertificateRequestBuilder extends SmartIdRequestBuilder {
   }
 
   /**
+   * Sets the request's personal semantics identifier
+   * <p>
+   * National identity consists of country code and national
+   * identity number. Either use
+   * {@link #withNationalIdentity(NationalIdentity)}
+   * or use {@link #withNationalIdentityNumber(String)}
+   * and {@link #withCountryCode(String)} separately.
+   *
+   * @param semanticsIdentifier national identity number of the national identity
+   * @return this builder
+   */
+  public CertificateRequestBuilder withSemanticsIdentifier(String semanticsIdentifier) {
+    super.withSemanticsIdentifier(semanticsIdentifier);
+    return this;
+  }
+
+  /**
    * Send the certificate choice request and get the response
    *x
    * @throws InvalidParametersException when mandatory request parameters are missing
@@ -278,6 +295,8 @@ public class CertificateRequestBuilder extends SmartIdRequestBuilder {
   private CertificateChoiceResponse fetchCertificateChoiceSessionResponse(CertificateRequest request) {
     if (isNotEmpty(getDocumentNumber())) {
       return getConnector().getCertificate(getDocumentNumber(), request);
+    } else if(getSemanticsIdentifier()!=null) {
+      return getConnector().getCertificate(getSemanticsIdentifier(), request);
     } else {
       NationalIdentity identity = getNationalIdentity();
       return getConnector().getCertificate(identity, request);

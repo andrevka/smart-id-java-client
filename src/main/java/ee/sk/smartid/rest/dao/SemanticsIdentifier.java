@@ -1,4 +1,4 @@
-package ee.sk.smartid.rest;
+package ee.sk.smartid.rest.dao;
 
 /*-
  * #%L
@@ -12,10 +12,10 @@ package ee.sk.smartid.rest;
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -26,28 +26,14 @@ package ee.sk.smartid.rest;
  * #L%
  */
 
-import ee.sk.smartid.exception.SessionNotFoundException;
-import ee.sk.smartid.rest.dao.*;
+public class SemanticsIdentifier {
+  String identifier;
 
-import java.io.Serializable;
-import java.util.concurrent.TimeUnit;
+  public SemanticsIdentifier(String identifier) {
+    this.identifier = identifier;
+  }
 
-public interface SmartIdConnector extends Serializable {
-
-  SessionStatus getSessionStatus(String sessionId) throws SessionNotFoundException;
-
-  CertificateChoiceResponse getCertificate(NationalIdentity identity, CertificateRequest request);
-
-  CertificateChoiceResponse getCertificate(String documentNumber, CertificateRequest request);
-
-  CertificateChoiceResponse getCertificate(SemanticsIdentifier identifier, CertificateRequest request);
-
-  SignatureSessionResponse sign(String documentNumber, SignatureSessionRequest request);
-
-  AuthenticationSessionResponse authenticate(String documentNumber, AuthenticationSessionRequest request);
-
-  AuthenticationSessionResponse authenticate(NationalIdentity identity, AuthenticationSessionRequest request);
-
-  void setSessionStatusResponseSocketOpenTime(TimeUnit sessionStatusResponseSocketOpenTimeUnit, long sessionStatusResponseSocketOpenTimeValue);
-
+  public String getIdentifier() {
+    return identifier;
+  }
 }

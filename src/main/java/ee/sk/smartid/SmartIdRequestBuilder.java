@@ -30,6 +30,7 @@ import ee.sk.smartid.exception.*;
 import ee.sk.smartid.rest.SessionStatusPoller;
 import ee.sk.smartid.rest.SmartIdConnector;
 import ee.sk.smartid.rest.dao.NationalIdentity;
+import ee.sk.smartid.rest.dao.SemanticsIdentifier;
 import ee.sk.smartid.rest.dao.SessionResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,7 @@ public abstract class SmartIdRequestBuilder {
   private String countryCode;
   private String nationalIdentityNumber;
   private NationalIdentity nationalIdentity;
+  private SemanticsIdentifier semanticsIdentifier;
   private String documentNumber;
   private String certificateLevel;
   private SignableData dataToSign;
@@ -112,6 +114,14 @@ public abstract class SmartIdRequestBuilder {
     this.displayText = displayText;
     return this;
   }
+
+  public SmartIdRequestBuilder withSemanticsIdentifier(
+      String semanticsIdentifier) {
+    this.semanticsIdentifier = new SemanticsIdentifier(semanticsIdentifier);
+    return this;
+  }
+
+
 
   protected void validateParameters() {
     if (isBlank(relyingPartyUUID)) {
@@ -213,4 +223,6 @@ public abstract class SmartIdRequestBuilder {
   protected String getDisplayText() {
     return displayText;
   }
+
+  public SemanticsIdentifier getSemanticsIdentifier() { return semanticsIdentifier; }
 }
