@@ -26,8 +26,15 @@ package ee.sk.smartid.rest.dao;
  * #L%
  */
 
-public class SemanticsIdentifier {
+import java.io.Serializable;
+
+public class SemanticsIdentifier implements Serializable {
+
   String identifier;
+
+  public SemanticsIdentifier(IdentityType identityType, CountryCode code, String identityNumber) {
+    this.identifier = identityType.toString() + code + "-" + identityNumber;
+  }
 
   public SemanticsIdentifier(String identifier) {
     this.identifier = identifier;
@@ -36,4 +43,20 @@ public class SemanticsIdentifier {
   public String getIdentifier() {
     return identifier;
   }
+
+  public enum IdentityType {
+    PAS, IDC, PNO
+  }
+
+  public enum CountryCode {
+    EE, LT, LV
+  }
+
+  @Override
+  public String toString() {
+    return "SemanticsIdentifier{" +
+        "identifier='" + identifier + '\'' +
+        '}';
+  }
+
 }

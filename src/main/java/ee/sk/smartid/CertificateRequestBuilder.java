@@ -207,16 +207,31 @@ public class CertificateRequestBuilder extends SmartIdRequestBuilder {
   /**
    * Sets the request's personal semantics identifier
    * <p>
-   * National identity consists of country code and national
-   * identity number. Either use
-   * {@link #withNationalIdentity(NationalIdentity)}
-   * or use {@link #withNationalIdentityNumber(String)}
-   * and {@link #withCountryCode(String)} separately.
+   * Semantics identifier consists of identity type, country code, a hyphen and the identifier.
+   * Either use
+   * {@link #withSemanticsIdentifier(String)}
+   * or use {@link #withSemanticsIdentifier(SemanticsIdentifier)}
    *
-   * @param semanticsIdentifier national identity number of the national identity
+   * @param semanticsIdentifier semantics identifier for a person
    * @return this builder
    */
   public CertificateRequestBuilder withSemanticsIdentifier(String semanticsIdentifier) {
+    super.withSemanticsIdentifier(semanticsIdentifier);
+    return this;
+  }
+
+  /**
+   * Sets the request's personal semantics identifier
+   * <p>
+   * Semantics identifier consists of identity type, country code, and the identifier.
+   * Either use
+   * {@link #withSemanticsIdentifier(SemanticsIdentifier)}
+   * or use {@link #withSemanticsIdentifier(String)}
+   *
+   * @param semanticsIdentifier semantics identifier for a person
+   * @return this builder
+   */
+  public CertificateRequestBuilder withSemanticsIdentifier(SemanticsIdentifier semanticsIdentifier) {
     super.withSemanticsIdentifier(semanticsIdentifier);
     return this;
   }
@@ -327,9 +342,9 @@ public class CertificateRequestBuilder extends SmartIdRequestBuilder {
 
   protected void validateParameters() {
     super.validateParameters();
-    if (isBlank(getDocumentNumber()) && !hasNationalIdentity()) {
-      logger.error("Either document number or national identity must be set");
-      throw new InvalidParametersException("Either document number or national identity must be set");
+    if (isBlank(getDocumentNumber()) && !hasNationalIdentity() && !hasSemanticsIdentifier()) {
+      logger.error("Either document number, national identity or semantics identifier must be set");
+      throw new InvalidParametersException("Either document number, national identity or semantics identifier must be set");
     }
   }
 

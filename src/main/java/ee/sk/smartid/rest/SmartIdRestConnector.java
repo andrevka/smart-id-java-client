@@ -116,6 +116,7 @@ public class SmartIdRestConnector implements SmartIdConnector {
         .fromUri(endpointUrl)
         .path(CERTIFICATE_CHOICE_BY_NATURAL_PERSON_SEMANTICS_IDENTIFIER)
         .build(identifier.getIdentifier());
+    System.out.println(uri);
     return postCertificateRequest(uri, request);
   }
 
@@ -130,6 +131,25 @@ public class SmartIdRestConnector implements SmartIdConnector {
       return postRequest(uri, request, SignatureSessionResponse.class);
     } catch (NotFoundException e) {
       logger.warn("User account not found for signing with document " + documentNumber);
+      throw new UserAccountNotFoundException();
+    } catch (ForbiddenException e) {
+      logger.warn("No permission to issue the request");
+      throw new RequestForbiddenException();
+    }
+  }
+
+  @Override
+  public SignatureSessionResponse sign(SemanticsIdentifier identifier,
+      SignatureSessionRequest request) {
+    logger.debug("Signing for semantics identifier " + identifier);
+    URI uri = UriBuilder
+        .fromUri(endpointUrl)
+        .path(SIGNATURE_BY_NATURAL_PERSON_SEMANTICS_IDENTIFIER)
+        .build(identifier.getIdentifier());
+    try {
+      return postRequest(uri, request, SignatureSessionResponse.class);
+    } catch (NotFoundException e) {
+      logger.warn("User account not found for semantics identifier " + identifier.getIdentifier());
       throw new UserAccountNotFoundException();
     } catch (ForbiddenException e) {
       logger.warn("No permission to issue the request");
@@ -154,6 +174,16 @@ public class SmartIdRestConnector implements SmartIdConnector {
         .fromUri(endpointUrl)
         .path(AUTHENTICATE_BY_NATIONAL_IDENTITY_PATH)
         .build(identity.getCountryCode(), identity.getNationalIdentityNumber());
+    return postAuthenticationRequest(uri, request);
+  }
+
+  @Override
+  public AuthenticationSessionResponse authenticate(SemanticsIdentifier identity, AuthenticationSessionRequest request) {
+    logger.debug("Authenticating for " + identity);
+    URI uri = UriBuilder
+        .fromUri(endpointUrl)
+        .path(AUTHENTICATE_BY_NATURAL_PERSON_SEMANTICS_IDENTIFIER)
+        .build(identity.getIdentifier());
     return postAuthenticationRequest(uri, request);
   }
 

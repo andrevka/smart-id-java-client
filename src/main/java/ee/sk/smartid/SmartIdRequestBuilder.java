@@ -85,6 +85,18 @@ public abstract class SmartIdRequestBuilder {
     return this;
   }
 
+  public SmartIdRequestBuilder withSemanticsIdentifier(
+      String semanticsIdentifier) {
+    this.semanticsIdentifier = new SemanticsIdentifier(semanticsIdentifier);
+    return this;
+  }
+
+  public SmartIdRequestBuilder withSemanticsIdentifier(
+      SemanticsIdentifier semanticsIdentifier) {
+    this.semanticsIdentifier = semanticsIdentifier;
+    return this;
+  }
+
   protected SmartIdRequestBuilder withCountryCode(String countryCode) {
     this.countryCode = countryCode;
     return this;
@@ -112,12 +124,6 @@ public abstract class SmartIdRequestBuilder {
 
   protected SmartIdRequestBuilder withDisplayText(String displayText) {
     this.displayText = displayText;
-    return this;
-  }
-
-  public SmartIdRequestBuilder withSemanticsIdentifier(
-      String semanticsIdentifier) {
-    this.semanticsIdentifier = new SemanticsIdentifier(semanticsIdentifier);
     return this;
   }
 
@@ -157,6 +163,10 @@ public abstract class SmartIdRequestBuilder {
 
   protected boolean hasNationalIdentity() {
     return nationalIdentity != null || (isNotBlank(countryCode) && isNotBlank(nationalIdentityNumber));
+  }
+
+  protected boolean hasSemanticsIdentifier() {
+    return semanticsIdentifier != null;
   }
 
   protected NationalIdentity getNationalIdentity() {

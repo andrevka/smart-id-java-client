@@ -44,9 +44,13 @@ public interface SmartIdConnector extends Serializable {
 
   SignatureSessionResponse sign(String documentNumber, SignatureSessionRequest request);
 
+  SignatureSessionResponse sign(SemanticsIdentifier identifier, SignatureSessionRequest request);
+
   AuthenticationSessionResponse authenticate(String documentNumber, AuthenticationSessionRequest request);
 
   AuthenticationSessionResponse authenticate(NationalIdentity identity, AuthenticationSessionRequest request);
+
+  AuthenticationSessionResponse authenticate(SemanticsIdentifier identity, AuthenticationSessionRequest request);
 
   void setSessionStatusResponseSocketOpenTime(TimeUnit sessionStatusResponseSocketOpenTimeUnit, long sessionStatusResponseSocketOpenTimeValue);
 
